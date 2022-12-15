@@ -142,6 +142,7 @@ int main() {
 	one.push_back(2);
 	one.push_back(4);
 	one.push_back(7);
+	one.isert(2, 9);
 	for (size_t ii = 0; ii < one.getSize(); ii++)
 	{
 		std::cout << one[ii] << std::endl;
