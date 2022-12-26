@@ -8,6 +8,7 @@ public:
 	List();
 	~List();
 	T& operator[] (const size_t index);
+	T& at(const size_t index);
 	void push_back(const T& date);
 	void push_front(const T& date);
 	void pop_front();
@@ -109,12 +110,18 @@ void List<T>::clear()
 template<class T>
 T& List<T>::operator[] (const size_t index)
 {
-	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
 	auto current = cFirst;
 	for (size_t count = 0; count != index; count++) {
 		current = current->cNext;
 	}
 	return current->date;
+}
+
+template<class T>
+T& List<T>::at(const size_t index)
+{
+	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
+	return (*this)[index];
 }
 
 template<class T>
@@ -127,11 +134,11 @@ void List<T>::insert(const T& date, size_t index)
 		push_front(date);
 	else
 	{
-		auto previos = cFirst;
+		auto previous = cFirst;
 		for (size_t count = 0; count != index - 1; count++) {
-			previos = previos->cNext;
+			previous = previous->cNext;
 		}		
-		previos->cNext = new Cell<T>(date, previos->cNext);;
+		previous->cNext = new Cell<T>(date, previous->cNext);;
 		size++;
 	}
 }
@@ -145,11 +152,14 @@ void List<T>::removeAt(const size_t index)
 	else if (index == 0)
 		pop_front();
 	else {
-		auto previos = cFirst;
+		auto previous = cFirst;
 		for (size_t count = 0; count != index - 1; count++) {
-			previos = previos->cNext;
+			previous = previous->cNext;
 		}
-
+		auto remove_element = previous->cNext;
+		previous->cNext = remove_element->cNext;
+		delete remove_element;
+		size--;
 	}
 }
 
@@ -160,7 +170,7 @@ int main() {
 	one.push_back(7);
 	one.push_back(5);
 	one.push_back(8);
-	one.insert(3, 2);
+	one.at(1) = 3;
 	for (size_t ii = 0; ii < one.getSize(); ii++)
 	{
 		std::cout << one[ii] << std::endl;
