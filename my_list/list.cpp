@@ -13,6 +13,7 @@ public:
 	void pop_front();
 	void pop_back();
 	void insert(const T& date, size_t index);
+	void removeAt(const size_t index);
 	void clear();
 	int getSize() const { return size; }
 
@@ -53,9 +54,8 @@ void List<T>::push_back(const T& date)
 	}
 	else
 	{
-		Cell<T>* temp = new Cell<T>(date);
-		cLast->cNext = temp;
-		cLast = temp;
+		cLast->cNext = new Cell<T>(date);
+		cLast = cLast->cNext;
 	}
 	size++;
 }
@@ -121,7 +121,7 @@ template<class T>
 void List<T>::insert(const T& date, size_t index)
 {
 	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
-	if (index == size)
+	if (index == size - 1)
 		push_back(date);
 	else if (index == 0)
 		push_front(date);
@@ -130,11 +130,27 @@ void List<T>::insert(const T& date, size_t index)
 		auto previos = cFirst;
 		for (size_t count = 0; count != index - 1; count++) {
 			previos = previos->cNext;
-		}
-		auto temp = new Cell<T>(date, previos->cNext);
-		previos->cNext = temp;
+		}		
+		previos->cNext = new Cell<T>(date, previos->cNext);;
+		size++;
 	}
-	size++;
+}
+
+template<class T>
+void List<T>::removeAt(const size_t index)
+{
+	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
+	if (index == size - 1)
+		pop_back();
+	else if (index == 0)
+		pop_front();
+	else {
+		auto previos = cFirst;
+		for (size_t count = 0; count != index - 1; count++) {
+			previos = previos->cNext;
+		}
+
+	}
 }
 
 int main() {
@@ -142,7 +158,9 @@ int main() {
 	one.push_back(2);
 	one.push_back(4);
 	one.push_back(7);
-	one.isert(2, 9);
+	one.push_back(5);
+	one.push_back(8);
+	one.insert(3, 2);
 	for (size_t ii = 0; ii < one.getSize(); ii++)
 	{
 		std::cout << one[ii] << std::endl;
