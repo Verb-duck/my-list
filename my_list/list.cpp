@@ -7,6 +7,7 @@ class List
 public:
 	List();
 	~List();
+	List(List<T> const& list);
 	List<T>& operator =(const List<T>& list);
 	T& operator[] (const size_t index);
 	T operator[] (const size_t index) const;
@@ -48,6 +49,15 @@ template <class T>
 List<T>::~List()
 {
 	this->clear();
+}
+
+template<class T>
+List<T>::List(List<T> const& list)
+{
+	while (this->size != list.size)
+	{
+		this->push_back(list[size]);
+	}
 }
 
 template<class T>
@@ -219,10 +229,8 @@ int main() {
 	one.push_back(7);
 	one.push_back(5);
 	one.push_back(8);
-	List <int> two;
-	two.push_back(11);
-	two.push_back(12);
-	two = two;
+	List <int> two(one);
+	
 	for (size_t ii = 0; ii < two.getSize(); ii++)
 	{
 		std::cout << two[ii] << std::endl;
