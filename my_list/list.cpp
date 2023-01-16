@@ -19,6 +19,7 @@ public:
 	void pop_back();
 	void insert(const T& date, size_t index);
 	void removeAt(const size_t index);
+	int IndexOf(const T date);
 	void clear();
 	int getSize() const { return size; }
 	void swap(const size_t index1, const size_t index2);
@@ -74,8 +75,6 @@ List<T>& List<T>::operator=(const List<T>& list)
 	return *this;
 }
 
-
-
 template <class T>
 void List<T>::push_back(const T& date)
 {
@@ -128,7 +127,6 @@ void List<T>::pop_back()
 	}
 }
 
-
 template<class T>
 void List<T>::clear()
 {
@@ -147,7 +145,6 @@ void List<T>::swap(const size_t index1, const size_t index2)
 		this->operator[](index2) = temp;
 	}
 }
-
 
 template<class T>
 T& List<T>::operator[] (const size_t index)
@@ -172,14 +169,14 @@ T List<T>::operator[](const size_t index) const
 template<class T>
 T& List<T>::at(const size_t index)
 {
-	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
+	if (index > this->size || index < 0) throw std::out_of_range("arguments outside the expected range");
 	return (*this)[index];
 }
 
 template<class T>
 T List<T>::at(const size_t index) const
 {
-	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
+	if (index > this->size || index < 0) throw std::out_of_range("arguments outside the expected range");
 	return (*this)[index];
 }
 
@@ -222,6 +219,17 @@ void List<T>::removeAt(const size_t index)
 	}
 }
 
+template<class T>
+int List<T>::IndexOf(const T date)
+{
+	for (size_t ii = 0; ii < size; ii++)
+	{
+		if (this->operator[](ii) == date)
+			return ii;
+	}
+	return -1;
+}
+
 int main() {
 	List <int> one;
 	one.push_back(2);
@@ -230,7 +238,7 @@ int main() {
 	one.push_back(5);
 	one.push_back(8);
 	List <int> two(one);
-	
+	std::cout << two.IndexOf(0) << std::endl;
 	for (size_t ii = 0; ii < two.getSize(); ii++)
 	{
 		std::cout << two[ii] << std::endl;
