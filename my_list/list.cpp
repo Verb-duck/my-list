@@ -17,6 +17,7 @@ public:
 	void removeAt(const size_t index);
 	void clear();
 	int getSize() const { return size; }
+	void swap(const size_t index1, const size_t index2);
 
 private:
 	template <class T>
@@ -106,6 +107,17 @@ void List<T>::clear()
 
 }
 
+template<class T>
+void List<T>::swap(const size_t index1, const size_t index2)
+{
+	if (index1 != index2)
+	{
+		auto temp = this->operator[](index1);
+		this->operator[](index1) = this->operator[](index2);
+		this->operator[](index2) = temp;
+	}
+}
+
 
 template<class T>
 T& List<T>::operator[] (const size_t index)
@@ -170,7 +182,7 @@ int main() {
 	one.push_back(7);
 	one.push_back(5);
 	one.push_back(8);
-	one.at(1) = 3;
+	one.swap(2, 3);
 	for (size_t ii = 0; ii < one.getSize(); ii++)
 	{
 		std::cout << one[ii] << std::endl;
