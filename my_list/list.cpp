@@ -7,8 +7,11 @@ class List
 public:
 	List();
 	~List();
+	List<T>& operator =(const List<T>& list);
 	T& operator[] (const size_t index);
+	T operator[] (const size_t index) const;
 	T& at(const size_t index);
+	T at(const size_t index) const;
 	void push_back(const T& date);
 	void push_front(const T& date);
 	void pop_front();
@@ -46,6 +49,23 @@ List<T>::~List()
 {
 	this->clear();
 }
+
+template<class T>
+List<T>& List<T>::operator=(const List<T>& list)
+{
+	if (&list != this)
+	{
+		this->clear();
+		while (this->size != list.size)
+		{
+			this->push_back(list[size]);
+		}
+	}
+	return *this;
+}
+
+
+
 template <class T>
 void List<T>::push_back(const T& date)
 {
@@ -130,7 +150,24 @@ T& List<T>::operator[] (const size_t index)
 }
 
 template<class T>
+T List<T>::operator[](const size_t index) const
+{
+	auto current = cFirst;
+	for (size_t count = 0; count != index; count++) {
+		current = current->cNext;
+	}
+	return current->date;
+}
+
+template<class T>
 T& List<T>::at(const size_t index)
+{
+	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
+	return (*this)[index];
+}
+
+template<class T>
+T List<T>::at(const size_t index) const
 {
 	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
 	return (*this)[index];
@@ -182,9 +219,12 @@ int main() {
 	one.push_back(7);
 	one.push_back(5);
 	one.push_back(8);
-	one.swap(2, 3);
-	for (size_t ii = 0; ii < one.getSize(); ii++)
+	List <int> two;
+	two.push_back(11);
+	two.push_back(12);
+	two = two;
+	for (size_t ii = 0; ii < two.getSize(); ii++)
 	{
-		std::cout << one[ii] << std::endl;
+		std::cout << two[ii] << std::endl;
 	}
 }
