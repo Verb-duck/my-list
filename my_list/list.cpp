@@ -103,10 +103,20 @@ template<class T>
 void List<T>::pop_front()
 {
 	if (cFirst)
-	{
-		auto next = cFirst->cNext;
-		delete cFirst;
-		cFirst = next;
+	{	
+		if (cFirst->cNext)
+		{
+			auto next = cFirst->cNext;
+			delete cFirst;
+			cFirst = next;
+
+		}
+		else
+		{
+			delete cFirst;
+			cFirst = nullptr;
+			cLast = nullptr;
+		}
 		size--;
 	}
 }
@@ -224,7 +234,7 @@ void List<T>::insert(const T& date, size_t index)
 template<class T>
 void List<T>::removeAt(const size_t index)
 {
-	if (index > this->size) throw std::out_of_range("arguments outside the expected range");
+	if (index > this->size || index < 0) throw std::out_of_range("arguments outside the expected range");
 	if (index == size - 1)
 		pop_back();
 	else if (index == 0)
