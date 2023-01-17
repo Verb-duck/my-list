@@ -19,10 +19,11 @@ public:
 	void pop_back();
 	void insert(const T& date, size_t index);
 	void removeAt(const size_t index);
-	int IndexOf(const T date);
+	int  IndexOf(const T date);
 	void clear();
-	int getSize() const { return size; }
+	int  getSize() const { return size; }
 	void swap(const size_t index1, const size_t index2);
+	void sort();
 
 private:
 	template <class T>
@@ -147,6 +148,27 @@ void List<T>::swap(const size_t index1, const size_t index2)
 }
 
 template<class T>
+void List<T>::sort()
+{
+		auto current = cFirst;
+		auto temp = current->date;
+	for (size_t ii = 0; ii < size - 1; ii++)
+	{
+		for (size_t jj = ii; jj < size - 1 ; jj++ )
+		{
+			if (current->date > current->cNext->date)
+			{
+				temp = current->date;
+				current->date = current->cNext->date;
+				current->cNext->date = temp;
+			}
+			current = current->cNext;
+		}
+		current = cFirst;		
+	}
+}
+
+template<class T>
 T& List<T>::operator[] (const size_t index)
 {
 	auto current = cFirst;
@@ -232,13 +254,13 @@ int List<T>::IndexOf(const T date)
 
 int main() {
 	List <int> one;
-	one.push_back(2);
-	one.push_back(4);
-	one.push_back(7);
 	one.push_back(5);
-	one.push_back(8);
+	one.push_back(4);
+	one.push_back(9);
+	one.push_back(2);
+	one.push_back(1);
 	List <int> two(one);
-	std::cout << two.IndexOf(0) << std::endl;
+	two.sort();
 	for (size_t ii = 0; ii < two.getSize(); ii++)
 	{
 		std::cout << two[ii] << std::endl;
