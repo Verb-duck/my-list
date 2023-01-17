@@ -19,6 +19,7 @@ public:
 	void pop_back();
 	void insert(const T& date, size_t index);
 	void removeAt(const size_t index);
+	void removeAt(const size_t index1 , const size_t index2);
 	int  IndexOf(const T date);
 	void clear();
 	int  getSize() const { return size; }
@@ -252,6 +253,33 @@ void List<T>::removeAt(const size_t index)
 }
 
 template<class T>
+void List<T>::removeAt(const size_t index1, const size_t index2)
+{
+	if (index1 > this->size || index1 < 0 || index2 > this->size) throw std::out_of_range("arguments outside the expected range");
+	if (index1 >  index2) throw std::out_of_range("arguments index1 > index2");
+	size_t quantity = index2 - index1 + 1;
+	if (index1 == size - 1)
+		pop_back();
+	else if (index1 == 0)
+		while(quantity--)
+			pop_front();
+	else {
+		auto previous = cFirst;
+		for (size_t count = 0; count != index1 - 1; count++) {
+			previous = previous->cNext;
+		}
+		auto remove_element = previous->cNext;
+		while (quantity--)
+		{
+			previous->cNext = remove_element->cNext;
+			delete remove_element;
+			remove_element = previous->cNext;
+			size--;
+		}
+	}
+}
+
+template<class T>
 int List<T>::IndexOf(const T date)
 {
 	for (size_t ii = 0; ii < size; ii++)
@@ -269,10 +297,9 @@ int main() {
 	one.push_back(9);
 	one.push_back(2);
 	one.push_back(1);
-	List <int> two(one);
-	two.sort();
-	for (size_t ii = 0; ii < two.getSize(); ii++)
+	one.removeAt(2, 3);
+	for (size_t ii = 0; ii < one.getSize(); ii++)
 	{
-		std::cout << two[ii] << std::endl;
+		std::cout << one[ii] << std::endl;
 	}
 }
