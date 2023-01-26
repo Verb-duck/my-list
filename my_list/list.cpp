@@ -153,6 +153,7 @@ void List<T>::swap(const size_t index1, const size_t index2)
 {
 	if (index1 != index2)
 	{
+		std::swap(this->operator[](index1), this->operator[](index2));
 		auto temp = this->operator[](index1);
 		this->operator[](index1) = this->operator[](index2);
 		this->operator[](index2) = temp;
