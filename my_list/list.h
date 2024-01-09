@@ -1,4 +1,6 @@
-#include <iostream>
+#ifndef list_h
+#define list_h
+
 #include <stdexcept>
 
 
@@ -151,13 +153,7 @@ void List<T>::clear()
 template<class T>
 void List<T>::swap(const size_t index1, const size_t index2)
 {
-	if (index1 != index2)
-	{
-		std::swap(this->operator[](index1), this->operator[](index2));
-		auto temp = this->operator[](index1);
-		this->operator[](index1) = this->operator[](index2);
-		this->operator[](index2) = temp;
-	}
+	std::swap(this->operator[](index1), this->operator[](index2));		
 }
 
 template<class T>
@@ -292,16 +288,4 @@ int List<T>::IndexOf(const T date)
 	return -1;
 }
 
-int main() {
-	List <int> one;
-	one.push_back(5);
-	one.push_back(4);
-	one.push_back(9);
-	one.push_back(2);
-	one.push_back(1);
-	one.removeAt(2, 3);
-	for (size_t ii = 0; ii < one.getSize(); ii++)
-	{
-		std::cout << one[ii] << std::endl;
-	}
-}
+#endif
